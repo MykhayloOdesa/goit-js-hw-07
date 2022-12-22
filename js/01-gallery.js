@@ -41,3 +41,59 @@ import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
 console.log(galleryItems);
+
+const galleryRef = document.querySelector(".gallery");
+
+// Створення і рендер розмітки на підставі масиву даних galleryItems і наданого шаблону елемента галереї.
+const markup = galleryItems
+  .map(
+    ({ preview, original, description }) =>
+      `<div class="gallery-item">
+      <a class="gallery__link" href="${original}">
+        <img class="gallery__image" src="${preview}" data-source="${original}" alt="${description}" />
+      </a>
+    </div>`
+  )
+  .join("");
+
+galleryRef.innerHTML = markup;
+
+// Реалізація делегування на div.gallery і отримання url великого зображення.
+galleryRef.addEventListener("click", onPictureClick);
+
+function onPictureClick(event) {
+  event.preventDefault();
+  if (event.target.nodeName !== "IMG") {
+    return;
+  }
+
+  const url = event.target.dataset.source;
+
+  // Заміна значення атрибута src елемента <img> в модальному вікні перед відкриттям.
+  // Використовуй готову розмітку модального вікна із зображенням з прикладів бібліотеки basicLightbox.
+  const instance = basicLightbox.create(
+    `<img src="${url}" width="800" height="600" />`,
+    {
+      // Додай закриття модального вікна після натискання клавіші Escape.
+      // Зроби так, щоб прослуховування клавіатури було тільки доти, доки відкрите модальне вікно.
+      // Бібліотека basicLightbox містить метод для програмного закриття модального вікна.
+      onShow: (instance) => {
+        window.addEventListener("keydown", closeModal);
+      },
+      onClose: (instance) => {
+        window.removeEventListener("keydown", closeModal);
+      },
+    }
+  );
+
+  // Відкриття модального вікна по кліку на елементі галереї. Для цього ознайомся з документацією і прикладами.
+  instance.show();
+
+  function closeModal(event) {
+    console.log(event.code);
+    if (event.code != "Escape") {
+      return;
+    }
+    instance.close();
+  }
+}
