@@ -74,13 +74,12 @@ function onPictureClick(event) {
   const instance = basicLightbox.create(
     `<img src="${url}" width="800" height="600" />`,
     {
-      // Додай закриття модального вікна після натискання клавіші Escape.
-      // Зроби так, щоб прослуховування клавіатури було тільки доти, доки відкрите модальне вікно.
       // Бібліотека basicLightbox містить метод для програмного закриття модального вікна.
-      onShow: (instance) => {
+      // Зроби так, щоб прослуховування клавіатури було тільки доти, доки відкрите модальне вікно.
+      onShow: () => {
         window.addEventListener("keydown", closeModal);
       },
-      onClose: (instance) => {
+      onClose: () => {
         window.removeEventListener("keydown", closeModal);
       },
     }
@@ -89,6 +88,7 @@ function onPictureClick(event) {
   // Відкриття модального вікна по кліку на елементі галереї. Для цього ознайомся з документацією і прикладами.
   instance.show();
 
+  // Додай закриття модального вікна після натискання клавіші Escape.
   function closeModal(event) {
     console.log(event.code);
     if (event.code != "Escape") {
