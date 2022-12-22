@@ -62,7 +62,7 @@ function onPictureClick(event) {
   });
 
   lightbox.on("closed.simplelightbox", () => {
-    lightbox.close();
+    // lightbox.close();
     lightbox.refresh();
   });
 }
