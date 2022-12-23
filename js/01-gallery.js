@@ -61,39 +61,39 @@ galleryRef.innerHTML = markup;
 // Реалізація делегування на div.gallery і отримання url великого зображення.
 galleryRef.addEventListener("click", onPictureClick);
 
+// Заміна значення атрибута src елемента <img> в модальному вікні перед відкриттям.
+// Використовуй готову розмітку модального вікна із зображенням з прикладів бібліотеки basicLightbox.
+const instance = basicLightbox.create(
+  `<img src="" width="800" height="600" />`,
+  {
+    // Бібліотека basicLightbox містить метод для програмного закриття модального вікна.
+    // Зроби так, щоб прослуховування клавіатури було тільки доти, доки відкрите модальне вікно.
+    onShow: () => {
+      window.addEventListener("keydown", onEscKeyCloseModal);
+    },
+    onClose: () => {
+      window.removeEventListener("keydown", onEscKeyCloseModal);
+    },
+  }
+);
+
 function onPictureClick(event) {
   event.preventDefault();
   if (event.target.nodeName !== "IMG") {
     return;
   }
 
-  const url = event.target.dataset.source;
-
-  // Заміна значення атрибута src елемента <img> в модальному вікні перед відкриттям.
-  // Використовуй готову розмітку модального вікна із зображенням з прикладів бібліотеки basicLightbox.
-  const instance = basicLightbox.create(
-    `<img src="${url}" width="800" height="600" />`,
-    {
-      // Бібліотека basicLightbox містить метод для програмного закриття модального вікна.
-      // Зроби так, щоб прослуховування клавіатури було тільки доти, доки відкрите модальне вікно.
-      onShow: () => {
-        window.addEventListener("keydown", closeModal);
-      },
-      onClose: () => {
-        window.removeEventListener("keydown", closeModal);
-      },
-    }
-  );
+  instance.element().querySelector("img").src = event.target.dataset.source;
 
   // Відкриття модального вікна по кліку на елементі галереї. Для цього ознайомся з документацією і прикладами.
   instance.show();
+}
 
-  // Додай закриття модального вікна після натискання клавіші Escape.
-  function closeModal(event) {
-    console.log(event.code);
-    if (event.code != "Escape") {
-      return;
-    }
-    instance.close();
+// Додай закриття модального вікна після натискання клавіші Escape.
+function onEscKeyCloseModal(event) {
+  console.log(event.code);
+  if (event.code !== "Escape") {
+    return;
   }
+  instance.close();
 }

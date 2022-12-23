@@ -25,8 +25,6 @@ import { galleryItems } from "./gallery-items.js";
 
 console.log(galleryItems);
 
-// console.dir(SimpleLightbox);
-
 const galleryRef = document.querySelector(".gallery");
 
 // Створення і рендер розмітки на підставі масиву даних galleryItems і наданого шаблону елемента галереї.
@@ -46,23 +44,9 @@ galleryRef.innerHTML = markup;
 
 // Ініціалізація бібліотеки після створення і додання елементів галереї у ul.gallery.
 // Для цього ознайомся з документацією SimpleLightbox - насамперед секції «Usage» і «Markup».
-galleryRef.addEventListener("click", onPictureClick);
-
-function onPictureClick(event) {
-  event.preventDefault();
-  if (event.target.nodeName !== "IMG") {
-    return;
-  }
-
-  // Подивися в документації секцію «Options» і додай відображення підписів до зображень з атрибута alt.
-  // Нехай підпис буде знизу і з'являється через 250 мілісекунд після відкриття зображення.
-  let lightbox = new SimpleLightbox(".gallery__item", {
-    captionsData: "alt",
-    captionDelay: 250,
-  });
-
-  lightbox.on("closed.simplelightbox", () => {
-    // lightbox.close();
-    lightbox.refresh();
-  });
-}
+// Подивися в документації секцію «Options» і додай відображення підписів до зображень з атрибута alt.
+// Нехай підпис буде знизу і з'являється через 250 мілісекунд після відкриття зображення.
+let lightbox = new SimpleLightbox(".gallery__item", {
+  captionsData: "alt",
+  captionDelay: 250,
+});
